@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+    <div class="topbox">
+        {% if user.is_authenticated %}
+        <form method="post" action="/accounts/logout/">
+            {% csrf_token %}
+            <button type="submit">Sign Out</button>
+        </form>
+        {% else %}
+            <form method="post" action="/accounts/discord/login/">
+                {% csrf_token %}
+                <button type="submit">Sign In</button>
+            </form>
+        {% endif %}
+    </div>
+    <div class="contentbox">
+        <h1>{{guildname}}</h1>
+        <div class="subtitle">{{serverregion}}</div>
+        <div class="crest"></div>
+    </div>
+    
+    <div class="contentbox">
+        <div class="guildbox">
+            <h2>About</h2>
+            <div>{{aboutguild}}</div>
+        </div>
+    </div>
+
+    <div class="contentbox">
+        <div class="guildbox">
+            <h2>Perks</h2>
+            <div>{{guildperks|linebreaks}}</div>
+        </div>
+    </div>
+
+    <div class="contentbox">
+        <div class="guildbox">
+            <h2>Roster</h2>
+            <div>
+                {{aboutroster}}
+            </div>
+                {% include 'stubs/raidlist.html' with raidgroups=raidgroups %}
+            <br/>
+                {% include 'stubs/raidlist.html' with raidgroups=subgroups %}
+        </div>
+    </div>
+    
+    <div class="contentbox">
+        <div class="guildbox">
+            <h2>Apply</h2>
+            <div>{{lookingfor}}</div>
+            <br/>
+            <button class="btn btn-primary" data-toggle="modal" data-target="#applyModal">Apply</button>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="applyModal" tabindex="-1" role="dialog" aria-labelledby="applyModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="applyModalLabel">Code of Conduct</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+            <div class="modal-body">
+            {{codeofconduct|linebreaks}}
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <a class="btn btn-primary" href="{% url 'apply' %}">Agree</a>
+            </div>
+        </div>
+        </div>
+    </div>
+{% endblock %}

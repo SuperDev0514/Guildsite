@@ -1,0 +1,67 @@
+{% for raid in raidgroups %}
+    <style>
+        .table {
+            color: white;
+        }
+    </style>
+    <div class="raidbox">
+        {% if raid.raid_size > 0 %}
+            <h3>{{raid.name}} - {{ raid.member_set.count }} / {{raid.raid_size}}</h3>
+        {% else %}
+            <h3>{{raid.name}} - {{ raid.member_set.count }}</h3>
+        {% endif %}
+        <table class="table table-sm">
+            <caption>{{raid.schedule}}</caption>
+            <thead>
+                <tr>
+                    <th scope="col">Member</th>
+                    <th scope="col">Class</th>
+                    <th scope="col">iLevel</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for member in raid.member_set.all %}
+                <tr>
+                    <td>
+                        {% if member.public_note %}
+                        [{{member.public_note}}]
+                        {% endif %}
+                        
+                        {% if user.socialaccount_set.all.0.extra_data.username == member.discord_username %}
+                            <a href="/profile">{{member.discord_username}}</a>
+                        {% else %}
+                            {{member.discord_username}}
+                        {% endif %}
+                    </td>
+                    
+                    <td>
+                        {% for character in member.characters.all %}
+                            <div class="col-sm" data-toggle="tooltip" data-placement="left" title="{{character.name}}" data-name="{{character.name}}" id="cd{{character.id}}" onclick="copyTitle('cd{{character.id}}')">
+                                {% if user.is_superuser %}
+                                    <a href="/admin/guild/character/{{character.id}}/change/"><img class="classicon" src="static/img/classes/{{character.character_class.name}}.png" />{{character.character_class.name}}</a>
+                                {% else %}
+                                    <img class="classicon" src="static/img/classes/{{character.character_class.name}}.png" />{{character.character_class.name}}
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                        
+                    </td>
+                    <td>
+                        {% for character in member.characters.all %}
+                            <div class="col-sm">
+                                {% if character.ilevel > 0 %}
+                                {{character.ilevel}}
+                                {% else %}
+                                N/A
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                    </td>
+                
+                    
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endfor %}

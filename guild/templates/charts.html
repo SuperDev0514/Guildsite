@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/google-palette/1.1.0/palette.js" integrity="sha512-C8lBe+d5Peg8kU+0fyU+JfoDIf0kP1rQBuPwRSBNHqqvqaPu+rkjlY0zPPAqdJOLSFlVI+Wku32S7La7eFhvlA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<div class="contentbox">
+    <div class="guildbox">
+        <canvas id="class_distribution" width='500' height='500'></canvas>
+    </div>
+</div>
+<script>
+  const labels = [
+    {% for class in classes %}
+      '{{class.name}}',
+    {% endfor %}
+  ];
+
+  var myData = {{class_counts}};
+  var seq = palette('tol-dv', {{class_count}}).map(function(hex) {
+    return '#' + hex;
+  });
+
+  const data = {
+    labels: labels,
+    datasets: [{
+      label: 'Class Distribution',
+      data: myData,
+      backgroundColor: seq
+    }]
+  };
+
+  const config = {
+    type: 'pie',
+    data: data,
+    options:  {
+        plugins: {
+            colorschemes: {
+                scheme: 'brewer.Paired12'
+            }
+        }
+    }
+  };
+</script>
+<script>
+    const myChart = new Chart(
+      document.getElementById('class_distribution'),
+      config
+    );
+  </script>
+{% endblock %}

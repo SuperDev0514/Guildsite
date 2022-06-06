@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="contentbox">
+    <h1>False Star - Guild Application</h1>
+    <form method="POST" action="submit_apply">
+        {% csrf_token %}
+        <div class="guildbox">
+            <h2>About You</h2>
+            <div>
+                <span class="input-group-text">Discord ID</span>
+                <input type="text" name="discord_name" class="form-control" />
+            </div>
+            <span class="input-group-text">Usual Playtimes</span>
+            <textarea name="playtime" class="form-control"></textarea>
+            <br/>
+            <div>
+                <h2>About your Character</h2>
+                <div class="input-group">
+                    <span class="input-group-text">Character Name</span>
+                    <input type="text" name="character_name" class="form-control" />
+                    <span class="input-group-text">Class</span>
+                    <select class="form-control" name="character_class">
+                        {% for character_class in character_classes %}
+                        <option value="{{character_class.id}}">{{character_class.name}}</option>
+                        {% endfor %}
+                    </select>
+                    <span class="input-group-text">iLevel</span>
+                    <input type="number" name="character_ilevel" class="form-control" />
+                </div>
+                <br/>
+                <div>
+                    <h2>I agree...</h2>
+                    <div class="form-check">
+                        <span for="agree_tos" class="input-group-text">...to the Code of Conduct</span>
+                    </div>
+                    <div class="form-check">
+                        <span for="agree_silver" class="input-group-text">...to donate Silver Daily to the Guild</span>
+                    </div>
+                    <div class="form-check">
+                        <label for="agree_tasks" class="input-group-text">...to participate in Guild Tasks and Content</span>
+                    </div>
+                    <div class="form-check">
+                        <span for="agree_socialize" class="input-group-text">...to socialize on the Guild Discord server in Voice Chat</span>
+                    </div>
+                </div>
+            </div>
+            <br/>
+            <div class="split">
+                <a class="btn btn-danger" onclick="window.location.href='{% url 'index' %}'">Return</a>
+                <button class="btn btn-primary">Submit my Application</button>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}
