@@ -3,15 +3,20 @@
 ## How to run
 
 ### Setup a Venv
-`python3 -m venv venv
-source venv/bin/activate
-pip install --upgrade pip
-pip install django
-pip install django-allauth`
+`python3 -m venv venv`
+
+`source venv/bin/activate`
+
+`pip install --upgrade pip`
+
+`pip install django`
+
+`pip install django-allauth`
 
 ### Build the db
-`python3 manage.py migrate
-python3 manage.py createsuperuser`
+`python3 manage.py migrate`
+
+`python3 manage.py createsuperuser`
 
 ### Run it!~
 `python3 manage.py runserver`
